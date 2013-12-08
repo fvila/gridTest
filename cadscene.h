@@ -3,12 +3,12 @@
 
 #include <QGraphicsScene>
 
-class GridScene : public QGraphicsScene
+class CADScene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    explicit GridScene(QObject *parent = 0);
+    explicit CADScene(QObject *parent = 0);
     
     enum GridMode
     {

@@ -1,5 +1,5 @@
-#include "gridview.h"
-#include "gridscene.h"
+#include "cadview.h"
+#include "cadscene.h"
 #include "customrubberband.h"
 
 #include <QMouseEvent>
@@ -9,7 +9,7 @@
 #include <QScrollBar>
 #include <QDebug>
 
-GridView::GridView(QWidget *parent) :
+CADView::CADView(QWidget *parent) :
     QGraphicsView(parent)
 {
     mode = NORMAL;
@@ -24,17 +24,17 @@ GridView::GridView(QWidget *parent) :
     rubberBand = 0;
 }
 
-GridView::~GridView()
+CADView::~CADView()
 {
     delete rubberBand;
 }
 
-void GridView::setViewCenter(QGraphicsItem *viewCenter)
+void CADView::setViewCenter(QGraphicsItem *viewCenter)
 {
     this->viewCenter = viewCenter;
 }
 
-void GridView::mousePressEvent(QMouseEvent *event)
+void CADView::mousePressEvent(QMouseEvent *event)
 {
     switch (event->button())
     {
@@ -64,7 +64,7 @@ void GridView::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void GridView::mouseMoveEvent(QMouseEvent *event)
+void CADView::mouseMoveEvent(QMouseEvent *event)
 {
     QPointF start, end, realTranslate;
 
@@ -97,7 +97,7 @@ void GridView::mouseMoveEvent(QMouseEvent *event)
     emit mouseMoved(sceneCoords.x(), sceneCoords.y());
 }
 
-void GridView::mouseReleaseEvent(QMouseEvent *event)
+void CADView::mouseReleaseEvent(QMouseEvent *event)
 {
     qreal factor;
 
@@ -116,11 +116,11 @@ void GridView::mouseReleaseEvent(QMouseEvent *event)
         factor = matrix().mapRect(QRectF(0, 0, 1, 1)).width();
 
         if (factor  <= 0.2)
-            qobject_cast<GridScene *>(scene())->setGridMode(GridScene::NONE);
+            qobject_cast<CADScene *>(scene())->setGridMode(CADScene::NONE);
         else if (factor <= 0.7)
-            qobject_cast<GridScene *>(scene())->setGridMode(GridScene::MAJOR);
+            qobject_cast<CADScene *>(scene())->setGridMode(CADScene::MAJOR);
         else
-            qobject_cast<GridScene *>(scene())->setGridMode(GridScene::ALL);
+            qobject_cast<CADScene *>(scene())->setGridMode(CADScene::ALL);
 
         event->accept();
         break;
@@ -131,7 +131,7 @@ void GridView::mouseReleaseEvent(QMouseEvent *event)
     updateCenterRect();
 }
 
-void GridView::wheelEvent(QWheelEvent *event)
+void CADView::wheelEvent(QWheelEvent *event)
 {
     qreal scaleFactor = ::pow(2.0, event->delta() / 240.0);
     qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
@@ -140,18 +140,18 @@ void GridView::wheelEvent(QWheelEvent *event)
         return;
 
     if (factor  <= 0.2)
-        qobject_cast<GridScene *>(scene())->setGridMode(GridScene::NONE);
+        qobject_cast<CADScene *>(scene())->setGridMode(CADScene::NONE);
     else if (factor <= 0.7)
-        qobject_cast<GridScene *>(scene())->setGridMode(GridScene::MAJOR);
+        qobject_cast<CADScene *>(scene())->setGridMode(CADScene::MAJOR);
     else
-        qobject_cast<GridScene *>(scene())->setGridMode(GridScene::ALL);
+        qobject_cast<CADScene *>(scene())->setGridMode(CADScene::ALL);
 
     scale(scaleFactor, scaleFactor);
 
     updateCenterRect();
 }
 
-void GridView::updateCenterRect()
+void CADView::updateCenterRect()
 {
     QRect viewRect = this->viewport()->rect();
 
@@ -162,9 +162,47 @@ void GridView::updateCenterRect()
     dynamic_cast<QGraphicsRectItem*>(this->viewCenter)->setRect(mapToScene(viewRect).boundingRect());
 }
 
-void GridView::resizeEvent(QResizeEvent *event)
+void CADView::resizeEvent(QResizeEvent *event)
 {
     QGraphicsView::resizeEvent(event);
 
     updateCenterRect();
+}
+
+void CADView::keyPressEvent(QKeyEvent *event)
+{
+    QPointF start, end, realTranslate;
+
+    start = mapToScene(QPoint(0, 0));
+
+    switch(event->key())
+    {
+    case Qt::Key_Right:
+        end = mapToScene(QPoint(20, 0));
+        event->accept();
+        break;
+    case Qt::Key_Left:
+        end = mapToScene(QPoint(-20, 0));
+        event->accept();
+        break;
+    case Qt::Key_Up:
+        end = mapToScene(QPoint(0, 20));
+        event->accept();
+        break;
+    case Qt::Key_Down:
+        end = mapToScene(QPoint(0, -20));
+        event->accept();
+        break;
+    default:
+        event->ignore();
+        return;
+    }
+
+    realTranslate = start - end;
+
+    viewCenter->moveBy(realTranslate.x(), realTranslate.y());
+    centerOn(viewCenter);
+
+    updateCenterRect();
+    event->accept();
 }

@@ -31,7 +31,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="GridView" name="graphicsView"/>
+     <widget class="CADView" name="graphicsView"/>
     </item>
    </layout>
   </widget>
@@ -40,9 +40,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>GridView</class>
+   <class>CADView</class>
    <extends>QGraphicsView</extends>
-   <header>gridview.h</header>
+   <header>cadview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

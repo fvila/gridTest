@@ -6,12 +6,12 @@
 class QGraphicsItem;
 class CustomRubberBand;
 
-class GridView : public QGraphicsView
+class CADView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit GridView(QWidget *parent = 0);
-    ~GridView();
+    explicit CADView(QWidget *parent = 0);
+    ~CADView();
 
     void setViewCenter(QGraphicsItem* viewCenter);
 
@@ -29,6 +29,8 @@ private:
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
     virtual void wheelEvent(QWheelEvent *event);
+
+    virtual void keyPressEvent(QKeyEvent *event);
 
     void updateCenterRect();
 

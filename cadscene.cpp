@@ -1,4 +1,4 @@
-#include "gridscene.h"
+#include "cadscene.h"
 
 #include <QPainter>
 
@@ -6,7 +6,7 @@
 
 #include <QDebug>
 
-GridScene::GridScene(QObject *parent) :
+CADScene::CADScene(QObject *parent) :
     QGraphicsScene(parent)
 {
     space = 50;
@@ -16,12 +16,12 @@ GridScene::GridScene(QObject *parent) :
     setBackgroundBrush(Qt::black);
 }
 
-void GridScene::setGridMode(GridScene::GridMode mode)
+void CADScene::setGridMode(CADScene::GridMode mode)
 {
     this->mode = mode;
 }
 
-void GridScene::drawBackground(QPainter *painter, const QRectF &rect)
+void CADScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     painter->save();
 
@@ -70,9 +70,15 @@ void GridScene::drawBackground(QPainter *painter, const QRectF &rect)
         painter->drawPoints(whitePoints);
     }
 
+    // Short origin marker
+//    painter->setPen(Qt::lightGray);
+//    painter->drawLine(-20, 0, 20, 0);
+//    painter->drawLine(0, -20, 0, 20);
+
+    // Long origin marker
     painter->setPen(Qt::lightGray);
-    painter->drawLine(-20, 0, 20, 0);
-    painter->drawLine(0, -20, 0, 20);
+    painter->drawLine(0, rect.top(), 0, rect.bottom());
+    painter->drawLine(rect.left(), 0, rect.right(), 0);
 
     painter->restore();
 }

@@ -7,7 +7,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class GridScene;
+class CADScene;
 class QGraphicsRectItem;
 class QLabel;
 
@@ -24,7 +24,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    GridScene *scene;
+    CADScene *scene;
 
     QGraphicsRectItem *viewCenter;
 

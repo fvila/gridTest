@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "gridscene.h"
+#include "cadscene.h"
 
 #include <QGraphicsRectItem>
 #include <QLabel>
@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    scene = new GridScene;
+    scene = new CADScene;
 
     ui->graphicsView->setScene(scene);
     ui->graphicsView->scale(1, -1);
@@ -26,13 +26,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     viewCenter = new QGraphicsRectItem(visible_scene_rect);
 
-//    qDebug() << viewport_rect;
-//    qDebug() << visible_scene_rect;
-
     this->scene->addItem(viewCenter);
-    viewCenter->setPen(QPen(Qt::red));
 
-    qobject_cast<GridView *>(ui->graphicsView)->setViewCenter(viewCenter);
+#ifdef DEBUG
+    viewCenter->setPen(QPen(Qt::red));
+#endif
+
+    qobject_cast<CADView *>(ui->graphicsView)->setViewCenter(viewCenter);
 
     xCoordsLabel = new QLabel("X: 0");
     yCoordsLabel = new QLabel("Y: 0");
