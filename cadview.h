@@ -4,7 +4,7 @@
 #include <QGraphicsView>
 
 class QGraphicsItem;
-class CustomRubberBand;
+class CADRubberBand;
 
 class CADView : public QGraphicsView
 {
@@ -19,9 +19,6 @@ signals:
     void mouseMoved(qreal x, qreal y);
     
 public slots:
-    
-protected:
-    virtual void resizeEvent(QResizeEvent *event);
 
 private:
     virtual void mousePressEvent(QMouseEvent *event);
@@ -29,6 +26,7 @@ private:
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
     virtual void wheelEvent(QWheelEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
 
     virtual void keyPressEvent(QKeyEvent *event);
 
@@ -44,7 +42,7 @@ private:
     CurrentMode mode;
     QPoint origin;
     QGraphicsItem* viewCenter;
-    CustomRubberBand *rubberBand;
+    CADRubberBand *rubberBand;
 };
 
 #endif // GRIDVIEW_H

@@ -14,13 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-        customrubberband.cpp \
         cadview.cpp \
-        cadscene.cpp
+        cadscene.cpp \
+    cadrubberband.cpp
 
 HEADERS  += mainwindow.h \
-    customrubberband.h \
     cadview.h \
-    cadscene.h
+    cadscene.h \
+    cadrubberband.h
 
 FORMS    += mainwindow.ui

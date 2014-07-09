@@ -3,10 +3,10 @@
 
 #include <QRubberBand>
 
-class CustomRubberBand : public QRubberBand
+class CADRubberBand : public QRubberBand
 {
 public:
-    explicit CustomRubberBand(Shape s, QWidget *parent = 0);
+    explicit CADRubberBand(Shape s, QWidget *parent = 0);
     
     void paintEvent(QPaintEvent *event);
 signals:

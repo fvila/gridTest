@@ -1,6 +1,6 @@
 #include "cadview.h"
 #include "cadscene.h"
-#include "customrubberband.h"
+#include "cadrubberband.h"
 
 #include <QMouseEvent>
 #include <cmath>
@@ -50,7 +50,7 @@ void CADView::mousePressEvent(QMouseEvent *event)
         origin = event->pos();
 
         if (!rubberBand)
-            rubberBand = new CustomRubberBand(CustomRubberBand::Rectangle, this);
+            rubberBand = new CADRubberBand(CADRubberBand::Rectangle, this);
 
         rubberBand->setGeometry(QRect(origin, QSize()));
         rubberBand->show();
@@ -178,11 +178,11 @@ void CADView::keyPressEvent(QKeyEvent *event)
     switch(event->key())
     {
     case Qt::Key_Right:
-        end = mapToScene(QPoint(20, 0));
+        end = mapToScene(QPoint(-20, 0));
         event->accept();
         break;
     case Qt::Key_Left:
-        end = mapToScene(QPoint(-20, 0));
+        end = mapToScene(QPoint(20, 0));
         event->accept();
         break;
     case Qt::Key_Up:
@@ -202,7 +202,4 @@ void CADView::keyPressEvent(QKeyEvent *event)
 
     viewCenter->moveBy(realTranslate.x(), realTranslate.y());
     centerOn(viewCenter);
-
-    updateCenterRect();
-    event->accept();
 }
